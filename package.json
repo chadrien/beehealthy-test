@@ -1,0 +1,14 @@
+{
+  "name": "beehealthy-test",
+  "version": "0.0.1",
+  "description": "BeeHealthy Test",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "dependencies": {
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3"
+  }
+}
