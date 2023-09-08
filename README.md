@@ -42,6 +42,10 @@ The frontend is made with [NextJS](https://nextjs.org/), a React framework. Quer
 
 ```bash
 $ npm -w frontend install
+
+# Copy the default environment file
+# and edit it to match your configuration
+$ cp backend/.env.default backend/.env
 ```
 
 ### Running the app
