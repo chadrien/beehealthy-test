@@ -9,7 +9,7 @@
 /* eslint-disable */
 
 export interface IQuery {
-    categories(): Nullable<Category>[] | Promise<Nullable<Category>[]>;
+    categories(): Category[] | Promise<Category[]>;
 }
 
 export interface Category {

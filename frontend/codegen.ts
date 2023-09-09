@@ -3,11 +3,14 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   overwrite: true,
   schema: '../backend/src/**/*.gql',
+  documents: ['src/**/*.tsx'],
   generates: {
-    'src/gql/': {
+    'src/@types/codegen/': {
       preset: 'client',
-      plugins: [],
     },
+  },
+  hooks: {
+    afterAllFileWrite: ['prettier --write'],
   },
 };
 
