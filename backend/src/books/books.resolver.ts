@@ -1,5 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { NytService } from './nyt.service';
+import { GraphQLError } from 'graphql';
 
 @Resolver('Book')
 export class BooksResolver {
@@ -7,6 +8,10 @@ export class BooksResolver {
 
   @Query('books')
   async getBooks(@Args('category') category: string) {
-    return await this.nytService.getBooks(category);
+    try {
+      return await this.nytService.getBooks(category);
+    } catch {
+      return new GraphQLError('Unable to fetch books');
+    }
   }
 }
