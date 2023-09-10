@@ -29,6 +29,14 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
+export type Book = {
+  __typename?: 'Book';
+  author: Scalars['String']['output'];
+  isbn: Scalars['ID']['output'];
+  reviews: Array<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
+};
+
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID']['output'];
@@ -37,7 +45,12 @@ export type Category = {
 
 export type Query = {
   __typename?: 'Query';
+  books: Array<Book>;
   categories: Array<Category>;
+};
+
+export type QueryBooksArgs = {
+  category: Scalars['String']['input'];
 };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
@@ -45,6 +58,22 @@ export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetCategoriesQuery = {
   __typename?: 'Query';
   categories: Array<{ __typename?: 'Category'; id: string; name: string }>;
+};
+
+export type GetCategoriesAndBooksQueryVariables = Exact<{
+  booksCategory: Scalars['String']['input'];
+}>;
+
+export type GetCategoriesAndBooksQuery = {
+  __typename?: 'Query';
+  categories: Array<{ __typename?: 'Category'; id: string; name: string }>;
+  books: Array<{
+    __typename?: 'Book';
+    isbn: string;
+    title: string;
+    author: string;
+    reviews: Array<string>;
+  }>;
 };
 
 export const GetCategoriesDocument = {
@@ -73,3 +102,71 @@ export const GetCategoriesDocument = {
     },
   ],
 } as unknown as DocumentNode<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetCategoriesAndBooksDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCategoriesAndBooks' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'booksCategory' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'categories' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'books' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'category' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'booksCategory' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'isbn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'author' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'reviews' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCategoriesAndBooksQuery,
+  GetCategoriesAndBooksQueryVariables
+>;

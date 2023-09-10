@@ -1,10 +1,8 @@
-import '@testing-library/jest-dom';
 import Home from '@/app/page';
 import { render, screen } from '@testing-library/react';
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Suspense } from 'react';
+import { MockedResponse } from '@apollo/client/testing';
 import { GET_CATEGORIES_QUERY } from '@/graphql/queries';
+import { getWrapperForMocks } from '../wrapper';
 
 describe('Home', () => {
   it('renders a list of categories', async () => {
@@ -34,16 +32,3 @@ describe('Home', () => {
     );
   });
 });
-
-const getWrapperForMocks: (
-  mocks: MockedResponse[],
-) => React.FC<React.PropsWithChildren> = (mocks) =>
-  function Wrapper({ children }) {
-    return (
-      <ChakraProvider>
-        <MockedProvider mocks={mocks}>
-          <Suspense>{children}</Suspense>
-        </MockedProvider>
-      </ChakraProvider>
-    );
-  };

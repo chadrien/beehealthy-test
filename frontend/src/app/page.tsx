@@ -1,47 +1,39 @@
 'use client';
 
+import PageLayout from '@/components/PageLayout';
 import { GET_CATEGORIES_QUERY } from '@/graphql/queries';
 import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Container,
-  Heading,
-} from '@chakra-ui/react';
+import { Link } from '@chakra-ui/next-js';
+import { ListItem, SimpleGrid, Text, UnorderedList } from '@chakra-ui/react';
 
 const Home: React.FC = () => {
   const { data } = useSuspenseQuery(GET_CATEGORIES_QUERY, {
-    fetchPolicy: 'network-only',
+    // fetchPolicy: 'network-only',
   });
 
+  const midIndex = Math.floor(data.categories.length / 2);
+  const col1Categories = data.categories.slice(0, midIndex);
+  const col2Categories = data.categories.slice(midIndex);
+
   return (
-    <Container paddingY={5}>
-      <Heading marginBottom={10}>New York Times bestseller books</Heading>
-      <Accordion allowToggle>
-        {data.categories.map((category, index) => (
-          <AccordionItem key={index}>
-            <Heading size="lg">
-              <AccordionButton>
-                <Box as="span" flex="1" textAlign="left">
-                  {category.name}
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </Heading>
-            <AccordionPanel paddingBottom={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </AccordionPanel>
-          </AccordionItem>
+    <PageLayout title="New York Times bestsellers categories">
+      <SimpleGrid columns={2} spacing={10}>
+        {[col1Categories, col2Categories].map((categories, index) => (
+          <UnorderedList key={index}>
+            {categories.map((category, index) => (
+              <ListItem key={index}>
+                <Text>
+                  {/* Because of API rate limits, we can't prefetch or we will go over the limit way too fast */}
+                  <Link href={`/${category.id}`} prefetch={false}>
+                    {category.name}
+                  </Link>
+                </Text>
+              </ListItem>
+            ))}
+          </UnorderedList>
         ))}
-      </Accordion>
-    </Container>
+      </SimpleGrid>
+    </PageLayout>
   );
 };
 
