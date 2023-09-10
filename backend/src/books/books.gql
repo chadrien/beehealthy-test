@@ -1,0 +1,10 @@
+type Query {
+  books(category: String!): [Book!]!
+}
+
+type Book {
+  isbn: ID!
+  title: String!
+  author: String!
+  reviews: [String!]!
+}

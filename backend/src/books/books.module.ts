@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
 import { CategoriesResolver } from './categories.resolver';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { NytService } from './nyt.service';
+import { BooksResolver } from './books.resolver';
 
 @Module({
   imports: [HttpModule, ConfigModule],
-  providers: [CategoriesService, CategoriesResolver],
+  providers: [NytService, CategoriesResolver, BooksResolver],
 })
 export class BooksModule {}
