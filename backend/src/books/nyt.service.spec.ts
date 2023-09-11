@@ -297,5 +297,24 @@ describe('NytService', () => {
         'Unable to fetch books',
       );
     });
+
+    it('returns the top 10 books', async () => {
+      const response: AxiosResponse<DeepPartial<BooksListsResponse>> = {
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: undefined,
+        data: {
+          results: Array.from(Array(20).keys()).map((i) => ({
+            rank: i + 1,
+            book_details: [{}],
+            reviews: [],
+          })),
+        },
+      };
+      httpService.get.mockReturnValueOnce(of(response));
+
+      expect(await nytService.getBooks('hardcover-fiction')).toHaveLength(10);
+    });
   });
 });

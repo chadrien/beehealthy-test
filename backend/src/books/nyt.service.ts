@@ -79,6 +79,8 @@ export class NytService {
               }),
             ),
         ),
+        // We only want the top 10 books
+        map((books) => books.slice(0, 10)),
         catchError((error) => {
           this.logger.error(error);
           throw new Error('Unable to fetch books');
