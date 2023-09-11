@@ -23,7 +23,7 @@ import BookCardBodySection from './BookCardBodySection';
 const BooksPage: React.FC<{ params: { category: string } }> = ({ params }) => {
   const { data } = useSuspenseQuery(GET_CATEGORIES_AND_BOOKS_QUERY, {
     variables: { booksCategory: params.category },
-    // fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only',
   });
 
   const categoryDisplayName = data.categories.find(

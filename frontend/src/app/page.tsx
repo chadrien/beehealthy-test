@@ -8,7 +8,7 @@ import { ListItem, SimpleGrid, Text, UnorderedList } from '@chakra-ui/react';
 
 const Home: React.FC = () => {
   const { data } = useSuspenseQuery(GET_CATEGORIES_QUERY, {
-    // fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only',
   });
 
   const midIndex = Math.floor(data.categories.length / 2);
