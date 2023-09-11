@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { Book, Category } from 'src/graphql';
+import { BooksListsNamesResponse, BooksListsResponse } from './nyt.types';
 
 @Injectable()
 export class NytService {
@@ -14,8 +15,8 @@ export class NytService {
     private readonly configService: ConfigService,
   ) {}
 
-  private get<T = any>(url: string, config?: AxiosRequestConfig<T>) {
-    return this.httpService.get(url, {
+  private get<T = any>(url: string, config?: AxiosRequestConfig) {
+    return this.httpService.get<T>(url, {
       ...config,
       params: {
         ...config?.params,
@@ -27,7 +28,9 @@ export class NytService {
   // See https://developer.nytimes.com/docs/books-product/1/routes/lists/names.json/get
   async getCategories(): Promise<Category[]> {
     return firstValueFrom(
-      this.get('https://api.nytimes.com/svc/books/v3/lists/names.json').pipe(
+      this.get<BooksListsNamesResponse>(
+        'https://api.nytimes.com/svc/books/v3/lists/names.json',
+      ).pipe(
         map((response) =>
           response.data.results.map(
             ({ list_name_encoded, display_name }): Category => ({
@@ -47,17 +50,18 @@ export class NytService {
   // See https://developer.nytimes.com/docs/books-product/1/routes/lists.json/get
   async getBooks(category: string): Promise<Book[]> {
     return firstValueFrom(
-      this.get('https://api.nytimes.com/svc/books/v3/lists.json', {
-        params: { list: category },
-      }).pipe(
+      this.get<BooksListsResponse>(
+        'https://api.nytimes.com/svc/books/v3/lists.json',
+        {
+          params: { list: category },
+        },
+      ).pipe(
         map((response) =>
           response.data.results
             // NYT API returns books already sorted by rank, but we can't
             // rely on that, so we sort them again just to be sure.
             // E.g. if they change the API to return books in alphabetical order.
-            .sort((a, b) =>
-              a.book_details[0].rank > b.book_details[0].rank ? 1 : -1,
-            )
+            .sort((a, b) => (a.rank > b.rank ? 1 : -1))
             .map(
               ({ book_details, reviews }): Book => ({
                 isbn: book_details[0].primary_isbn13,

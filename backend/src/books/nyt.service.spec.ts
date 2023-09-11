@@ -1,10 +1,11 @@
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { of } from 'rxjs';
 import { NytService } from './nyt.service';
 import { Test } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
 import { of, throwError } from 'rxjs';
+import { BooksListsNamesResponse, BooksListsResponse } from './nyt.types';
+import { DeepPartial } from 'src/types/utils';
 
 describe('NytService', () => {
   let nytService: NytService;
@@ -21,6 +22,8 @@ describe('NytService', () => {
       .overrideProvider(ConfigService)
       .useValue({ get: jest.fn() })
       .compile();
+
+    module.useLogger(false);
 
     nytService = module.get(NytService);
     httpService = module.get(HttpService);
@@ -54,7 +57,7 @@ describe('NytService', () => {
 
   describe('getCategories', () => {
     it('returns categories', async () => {
-      const response: AxiosResponse = {
+      const response: AxiosResponse<DeepPartial<BooksListsNamesResponse>> = {
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -105,7 +108,7 @@ describe('NytService', () => {
 
   describe('getBooks', () => {
     it('returns books', async () => {
-      const response: AxiosResponse = {
+      const response: AxiosResponse<DeepPartial<BooksListsResponse>> = {
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -129,7 +132,7 @@ describe('NytService', () => {
               dagger: 0,
               amazon_product_url:
                 'http://www.amazon.com/Girls-Guide-Moving-On-Novel-ebook/dp/B00ZNE17B4?tag=thenewyorktim-20',
-              isbns: [{ isbn10: 553391925, isbn13: '9780553391923' }],
+              isbns: [{ isbn10: '553391925', isbn13: '9780553391923' }],
               book_details: [
                 {
                   title: "A GIRL'S GUIDE TO MOVING ON",
@@ -142,7 +145,7 @@ describe('NytService', () => {
                   age_group: '',
                   publisher: 'Ballantine',
                   primary_isbn13: '9780553391923',
-                  primary_isbn10: 553391925,
+                  primary_isbn10: '553391925',
                 },
               ],
               reviews: [
@@ -170,7 +173,7 @@ describe('NytService', () => {
     });
 
     it('includes reviews if present', async () => {
-      const response: AxiosResponse = {
+      const response: AxiosResponse<DeepPartial<BooksListsResponse>> = {
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -205,7 +208,7 @@ describe('NytService', () => {
     });
 
     it('returns empty reviews if there are no reviews', async () => {
-      const response: AxiosResponse = {
+      const response: AxiosResponse<DeepPartial<BooksListsResponse>> = {
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -237,7 +240,7 @@ describe('NytService', () => {
     });
 
     it('sorts the books by rank', async () => {
-      const response: AxiosResponse = {
+      const response: AxiosResponse<DeepPartial<BooksListsResponse>> = {
         status: 200,
         statusText: 'OK',
         headers: {},
@@ -246,27 +249,23 @@ describe('NytService', () => {
           status: 'OK',
           results: [
             {
-              book_details: [
-                {
-                  rank: 2,
-                  primary_isbn13: '2',
-                },
-              ],
+              rank: 2,
+              book_details: [{ primary_isbn13: '2' }],
               reviews: [],
             },
             {
+              rank: 1,
               book_details: [
                 {
-                  rank: 1,
                   primary_isbn13: '1',
                 },
               ],
               reviews: [],
             },
             {
+              rank: 3,
               book_details: [
                 {
-                  rank: 3,
                   primary_isbn13: '3',
                 },
               ],
