@@ -47,7 +47,7 @@ const BooksPage: React.FC<{ params: { category: string } }> = ({ params }) => {
             <Card key={index}>
               <CardHeader>
                 <Heading as="p" size="sm">
-                  {book.title}
+                  #{book.rank} - {book.title}
                 </Heading>
               </CardHeader>
               <CardBody>

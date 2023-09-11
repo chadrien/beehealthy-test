@@ -18,6 +18,7 @@ export const GET_CATEGORIES_AND_BOOKS_QUERY = graphql(/* GraphQL */ `
 
     books(category: $booksCategory) {
       isbn
+      rank
       title
       author
       reviews

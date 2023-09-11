@@ -15,6 +15,7 @@ export interface IQuery {
 
 export interface Book {
     isbn: string;
+    rank: number;
     title: string;
     author: string;
     reviews: string[];

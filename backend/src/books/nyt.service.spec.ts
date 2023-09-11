@@ -165,6 +165,7 @@ describe('NytService', () => {
       expect(await nytService.getBooks('hardcover-fiction')).toEqual([
         {
           isbn: '9780553391923',
+          rank: 5,
           title: "A GIRL'S GUIDE TO MOVING ON",
           author: 'Debbie Macomber',
           reviews: [],

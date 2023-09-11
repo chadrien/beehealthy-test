@@ -63,8 +63,9 @@ export class NytService {
             // E.g. if they change the API to return books in alphabetical order.
             .sort((a, b) => (a.rank > b.rank ? 1 : -1))
             .map(
-              ({ book_details, reviews }): Book => ({
+              ({ book_details, reviews, rank }): Book => ({
                 isbn: book_details[0].primary_isbn13,
+                rank,
                 title: book_details[0].title,
                 author: book_details[0].author,
                 // It would be nice to get more data through the review API
@@ -77,10 +78,10 @@ export class NytService {
                   .filter((review) => review.book_review_link !== '')
                   .map((review) => review.book_review_link),
               }),
-            ),
+            )
+            // We only want the top 10 books
+            .slice(0, 10),
         ),
-        // We only want the top 10 books
-        map((books) => books.slice(0, 10)),
         catchError((error) => {
           this.logger.error(error);
           throw new Error('Unable to fetch books');

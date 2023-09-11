@@ -33,6 +33,7 @@ export type Book = {
   __typename?: 'Book';
   author: Scalars['String']['output'];
   isbn: Scalars['ID']['output'];
+  rank: Scalars['Int']['output'];
   reviews: Array<Scalars['String']['output']>;
   title: Scalars['String']['output'];
 };
@@ -70,6 +71,7 @@ export type GetCategoriesAndBooksQuery = {
   books: Array<{
     __typename?: 'Book';
     isbn: string;
+    rank: number;
     title: string;
     author: string;
     reviews: Array<string>;
@@ -156,6 +158,7 @@ export const GetCategoriesAndBooksDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'isbn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'rank' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'author' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'reviews' } },

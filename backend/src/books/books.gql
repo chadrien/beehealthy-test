@@ -4,6 +4,7 @@ type Query {
 
 type Book {
   isbn: ID!
+  rank: Int!
   title: String!
   author: String!
   reviews: [String!]!

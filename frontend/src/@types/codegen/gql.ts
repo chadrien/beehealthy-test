@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  query GetCategories {\n    categories {\n      id\n      name\n    }\n  }\n':
     types.GetCategoriesDocument,
-  '\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      title\n      author\n      reviews\n    }\n  }\n':
+  '\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      rank\n      title\n      author\n      reviews\n    }\n  }\n':
     types.GetCategoriesAndBooksDocument,
 };
 
@@ -43,8 +43,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      title\n      author\n      reviews\n    }\n  }\n',
-): (typeof documents)['\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      title\n      author\n      reviews\n    }\n  }\n'];
+  source: '\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      rank\n      title\n      author\n      reviews\n    }\n  }\n',
+): (typeof documents)['\n  query GetCategoriesAndBooks($booksCategory: String!) {\n    categories {\n      id\n      name\n    }\n\n    books(category: $booksCategory) {\n      isbn\n      rank\n      title\n      author\n      reviews\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
