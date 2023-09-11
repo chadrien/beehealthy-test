@@ -53,6 +53,16 @@ $ cp backend/.env.default backend/.env
 ```bash
 # development
 $ npm -w frontend run dev
+
+# Copy the default environment file
+# and edit it to match your configuration
+$ cp frontend/.env.local.default frontend/.env.local
+```
+
+### Testing
+
+```bash
+$ npm -w frontend run test
 ```
 
 ### Linting
